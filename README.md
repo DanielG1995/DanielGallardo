@@ -19,3 +19,7 @@ El proyecto consta de la parte Front y Back para un mismo proyecto, con la sigui
 # Ejecutar los test para angular
 
     npm run tests
+
+# Ejecutar los test para determinar coverage de pruebas
+
+    npm run tests:coverage
