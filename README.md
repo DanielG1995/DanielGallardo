@@ -1,16 +1,16 @@
-#Test ANGULAR
+# Test ANGULAR
 
 El proyecto consta de la parte Front y Back en los mismos archivos, con la siguiente secuencias de comandos se podran instalar y ejecutar ambos proyectos
 
-#Instalar dependencias iniales
+## Instalar dependencias iniales
 
     npm install
 
-# Instalar dependencias para ambos proyectos
+## Instalar dependencias para ambos proyectos
 
     npm run install
 
-# Desplegar proyecto
+## Desplegar proyecto
 
     npm run start
 
