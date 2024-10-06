@@ -7,9 +7,9 @@ import {
   Put,
   Delete,
   JsonController,
-  Params,
   NotFoundError,
   BadRequestError,
+  QueryParams,
 } from "routing-controllers";
 import { ProductDTO } from "../dto/Product";
 import { MESSAGE_ERROR } from "../const/message-error.const";
@@ -21,9 +21,27 @@ export class ProductController {
   products: ProductInterface[] = PRODUCTS;
 
   @Get("")
-  getAll() {
+  getAll(@QueryParams() params: any) {
+    let allProducts = [...this.products]
+    if (typeof params?.q === 'string' && params?.q !== '') {
+      console.log(params?.q, typeof params?.q === 'string' && params?.q !== '')
+      allProducts = allProducts.filter(p => {
+        console.log(p.name.toLowerCase().includes(params?.q?.toLowerCase()))
+        return p.name.toLowerCase().includes(params?.q?.toLowerCase())
+      })
+    }
+    const returnedProducts = [...allProducts.slice((+params.page - 1) * params?.total, (+params.page - 1) * params?.total + +params?.total)]
+    const totalPages = Math.ceil(allProducts.length / params?.total)
     return {
-      data: [...this.products],
+      data: [...returnedProducts],
+      pagination: {
+        total: params?.total || 5,
+        page: params.page > totalPages ? totalPages : params?.page,
+        totalPages: Math.ceil(allProducts.length / params?.total),
+        items: allProducts.length,
+        totaCurrentItems: returnedProducts.length,
+        q: params?.q
+      }
     };
   }
 

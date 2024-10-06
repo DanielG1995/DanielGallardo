@@ -27,7 +27,8 @@
     min-width: 100px;
     text-align: center;
     overflow: hidden;
-    top: 0;
+    top: 20px;
+    right: 30px;
 }
 
 a,
@@ -42,6 +43,10 @@ span {
 a:hover,
 span:hover {
     background-color: whitesmoke;
+}
+
+.gap-10{
+    gap:10px
 }
 
 .btn-menu {
@@ -83,9 +88,10 @@ span:hover {
 
 .container-pagination {
     display: flex;
-    flex-direction: wrap;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
+    gap:20px;
     padding: 10px 0px;
 }
 

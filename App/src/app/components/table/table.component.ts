@@ -1,14 +1,16 @@
-import { Component, computed, EventEmitter, Input, input, Output, signal } from '@angular/core';
+import { Component, computed, EventEmitter, inject, Input, input, Output, signal } from '@angular/core';
 import { Product } from '../../interfaces/IProduct';
 import { Header } from '../../interfaces/IHeader';
 import { DatePipe } from '@angular/common';
 import { ModalComponent } from "../modal/modal.component";
 import { RouterLink } from '@angular/router';
+import { PaginationComponent } from "../pagination/pagination.component";
+import { ProductsService } from '../../services/products.service';
 
 @Component({
   selector: 'app-table',
   standalone: true,
-  imports: [DatePipe, ModalComponent, RouterLink],
+  imports: [DatePipe, ModalComponent, RouterLink, PaginationComponent],
   templateUrl: './table.component.html',
   styleUrl: './table.component.css'
 })
@@ -21,8 +23,10 @@ export class TableComponent {
   currentId = ''
   currentProduct: Product | null = null
   isModalVisible = false
+  productService = inject(ProductsService)
 
   onChangePagination(num: number) {
+    this.productService.loadProducts(num);
     this.paginateCount.set(num)
   }
 

@@ -55,12 +55,19 @@ body {
 .table-container {
     padding: 20px;
     background-color: white;
+    overflow: visible
+}
+
+.table-data-container{
+    overflow-x: auto;
+    overflow-y: visible;
 }
 
 table {
     width: 100%;
     border-spacing: 0px !important;
     border-radius: 20px;
+    min-width: 700px;
 }
 
 

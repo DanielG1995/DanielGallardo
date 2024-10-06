@@ -2,7 +2,7 @@ import { computed, inject, Injectable, signal } from '@angular/core';
 import { Product } from '../interfaces/IProduct';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { Error, Response } from '../interfaces/IResponse';
+import { Error, Pagination, Response } from '../interfaces/IResponse';
 import { catchError, map, Observable, of, tap } from 'rxjs';
 import { ValidationErrors } from '@angular/forms';
 
@@ -15,18 +15,25 @@ export class ProductsService {
   isLoading = signal(true)
   public currentProducts = computed(() => this.#products())
   #http = inject(HttpClient)
-
+  #pagination = signal<Pagination>({ page: 1, total: 0, totalPages: 0, items: 0, q: '', totaCurrentItems: 0 })
   constructor() {
-    this.#http.get<Response>(`${environment.apiUrl}bp/products`).subscribe(resp => {
+    this.loadProducts()
+  }
+
+  public getPagination = computed(() => this.#pagination())
+
+
+  loadProducts(total: number = 5, page: number = 1) {
+    this.#http.get<Response>(`${environment.apiUrl}bp/products?total=${total}&page=${page}&q=${this.getPagination().q}`).subscribe(resp => {
       this.#products.set(resp.data as Product[])
       this.#allProducts = resp.data as Product[]
+      this.#pagination.set(resp.pagination!)
       setTimeout(() => {
         this.isLoading.set(false);
-      }, 2000);
+      }, 1000);
     });
 
   }
-
 
   validateId(id: string): Observable<ValidationErrors | null> {
     return this.#http.get<Response>(`${environment.apiUrl}bp/products/verification/${id}`).pipe(
@@ -37,7 +44,15 @@ export class ProductsService {
 
 
   filterProducts = (value: string) => {
-    this.#products.set(this.#allProducts.filter(p => p.name.toLowerCase().includes(value.toLowerCase())));
+    console.log(this.#pagination())
+    this.#http.get<Response>(`${environment.apiUrl}bp/products?total=${this.#pagination().total}&page=${1}&q=${value}`).subscribe(resp => {
+      this.#products.set(resp.data as Product[])
+      this.#allProducts = resp.data as Product[]
+      this.#pagination.set(resp.pagination!)
+      setTimeout(() => {
+        this.isLoading.set(false);
+      }, 1000);
+    });
   }
 
   getProductByid(id: string) {
@@ -85,6 +100,7 @@ export class ProductsService {
       tap(() => {
         this.#products.update(prev => ([...prev.filter(p => p.id !== id)]))
         this.#allProducts = this.#allProducts.filter(p => p.id !== id)
+        this.#pagination.update(prev => ({ ...prev, totaCurrentItems: prev.totaCurrentItems - 1 }))
       })
     )
   }

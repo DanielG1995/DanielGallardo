@@ -45,7 +45,7 @@ export class ProductsComponent {
   onDeleteProduct(id: string) {
     this.productsService.deleteProduct(id).subscribe(resp => {
       this.messageAlert.text = resp.message
-      this.messageAlert.type = resp.type
+      this.messageAlert.type = resp.type || 'succes'
       this.messageAlert.timestamp = new Date().getTime()
     })
   }

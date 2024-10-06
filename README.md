@@ -1,6 +1,6 @@
 # Test ANGULAR
 
-El proyecto consta de la parte Front y Back para un mismo proyecto, con la siguiente secuencias de comandos se podran instalar y ejecutar ambos proyectos
+El proyecto consta de la parte Front (APP) y Back (Server) para un mismo repositorio, con las siguientes secuencias de comandos se podran instalar y ejecutar ambos proyectos
 
 ## Instalar dependencias iniales
 
@@ -14,7 +14,7 @@ El proyecto consta de la parte Front y Back para un mismo proyecto, con la sigui
 
     npm run start
 
-## Ambos proyectos tanto el servidor como el Front se despliegan con el anterior comando
+## Ambos proyectos se ejecutaran con el comando anterior
 
 # Ejecutar los test para angular
 
