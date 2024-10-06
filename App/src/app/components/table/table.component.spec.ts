@@ -3,10 +3,10 @@ import { TableComponent } from './table.component';
 import { DatePipe } from '@angular/common';
 import { By } from '@angular/platform-browser';
 import { ComponentRef, DebugElement } from '@angular/core';
-import { RouterTestingModule } from '@angular/router/testing';
 import { Product } from '../../interfaces/IProduct';
 import { Header } from '../../interfaces/IHeader';
-import { Router, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('TableComponent', () => {
   let component: TableComponent;
@@ -45,7 +45,7 @@ describe('TableComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [DatePipe],
-      imports: [RouterModule.forRoot([]),]
+      imports: [RouterModule.forRoot([]), HttpClientTestingModule]
     }).compileComponents();
 
     fixture = TestBed.createComponent(TableComponent);

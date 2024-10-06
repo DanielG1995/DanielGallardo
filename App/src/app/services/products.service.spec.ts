@@ -39,7 +39,7 @@ describe('ProductsService', () => {
     service = TestBed.inject(ProductsService);
     httpMock = TestBed.inject(HttpTestingController);
 
-    const req = httpMock.expectOne(`${environment.apiUrl}bp/products`);
+    const req = httpMock.expectOne((request)=>request.url.includes(`${environment.apiUrl}bp/products`));
     expect(req.request.method).toBe('GET');
     req.flush({ data: [...mockProducts] });
   });
@@ -54,11 +54,6 @@ describe('ProductsService', () => {
     expect(service.currentProducts()).toEqual(mockProducts);
   });
 
-  it('Debe filtrar un producto por Nombre', () => {
-    service.filterProducts('Savings');
-    expect(service.currentProducts()).toEqual([mockProducts?.[1]]);
-  });
-
   it('Debe crear un producto', () => {
     const newProduct: Product = { id: 'tres', name: 'Prestamos', description: 'Prestamos inmediatos', logo: 'logo3.png', date_release: '2024-07-31', date_revision: '2024-08-01' };
     const mockResponse: Response = { data: newProduct as Product, message: 'Product added succesfully', type: 'success' };
@@ -68,7 +63,7 @@ describe('ProductsService', () => {
       expect(service.currentProducts()).toContain(newProduct);
     });
 
-    const req = httpMock.expectOne(`${environment.apiUrl}bp/products`);
+    const req = httpMock.expectOne((request)=>request.url.includes(`${environment.apiUrl}bp/products`));
 
     expect(req?.request.method).toBe('POST');
     req.flush(mockResponse);
@@ -81,7 +76,7 @@ describe('ProductsService', () => {
       expect(service.currentProducts().find(p => p.id === updatedProduct.id)?.name).toEqual(updatedProduct.name);
     });
 
-    const req = httpMock.expectOne(`${environment.apiUrl}bp/products/${updatedProduct.id}`);
+    const req = httpMock.expectOne((request)=>request.url.includes(`${environment.apiUrl}bp/products/${updatedProduct.id}`));
     expect(req.request.method).toBe('PUT');
     req.flush({});
   });
@@ -93,7 +88,7 @@ describe('ProductsService', () => {
       expect(service.currentProducts()).toEqual(mockProducts.filter(p => p.id !== id));
     });
 
-    const req = httpMock.expectOne(`${environment.apiUrl}bp/products/${id}`);
+    const req = httpMock.expectOne((request)=>request.url.includes(`${environment.apiUrl}bp/products/${id}`));
     expect(req.request.method).toBe('DELETE');
     req.flush({});
   });

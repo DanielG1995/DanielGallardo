@@ -100,7 +100,7 @@ export class ProductsService {
       tap(() => {
         this.#products.update(prev => ([...prev.filter(p => p.id !== id)]))
         this.#allProducts = this.#allProducts.filter(p => p.id !== id)
-        this.#pagination.update(prev => ({ ...prev, totaCurrentItems: prev.totaCurrentItems - 1 }))
+        this.#pagination.update(prev => ({ ...prev, totaCurrentItems: prev?.totaCurrentItems - 1 }))
       })
     )
   }
